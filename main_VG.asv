@@ -1,0 +1,84 @@
+% Soluçao da equação de Van Genuchten (1980) e Mualem (1976), usando Matlab    
+% Pontificia Universidade Catolica do Rio de Janeiro  (SWCC)
+% Data: 11-03-2018
+% Jaime Andres Castañeda Barbosa 
+% Curva de retenção de água ou curva carateristica do solo, fornece a
+% relação entre o teor de água (theta) e o potencial de água sucção (psi),
+% este é usado para medir a capacidade do solo, a qualidade do campo, a
+% qualidade do solo, o armazenamento de água no solo. 
+% Diferentes modelos podem ser usados para estudar a curva de retenção
+% solo-água em um campo especifico.
+% O programa abaixo mostra a curva de retenção de água para diferentes
+% solos (areia, silte, silte argiloso) usando o modelo de Van Genchten que
+% é amplamente usado para SWCC   (curvas de retenção solo-água)
+%--------------------------------------------------------------------------
+%--------------------------------------------------------------------------
+close all;
+clear
+clc
+%--------------------------------------------------------------------------
+% Entradas:
+% psi - Pressão de sucção([L] or cm of water)
+% Saida:
+% theta - curva de retenção água [L^3L^?3] que é a mesma Function
+% (Van_Genuchten.m) nome de saida.
+% Os dados foram pegados do seguinte link:
+% https://de.wikipedia.org/wiki/Datei:Wrc.svg
+% 
+%--------------------------------------------------------------------------
+% Areia:
+%--------------------------------------------------------------------------
+psi = linspace(1e0,1e6,1000000);
+%-------------------------------
+[theta] = Van_Genuchten(0.370687,0.043019, 0.087424, 1.57535 );
+plot(psi,theta, 'displayname', 'Areia', 'linewidth', 2)
+hold on
+%--------------------------------------------------------------------------
+% % % Silte:
+% % %--------------------------------------------------------------------------
+% % [theta] = Van_Genuchten(0.421256,0, 0.003405, 1.34475 );
+% % plot(psi,theta, 'displayname', 'Silte', 'linewidth', 2)
+% % hold on
+% % %--------------------------------------------------------------------------
+% % % Silte Argiloso:
+% % %--------------------------------------------------------------------------
+% % [theta] = Van_Genuchten(0.421217,0, 0.013345, 1.12614 );
+% % plot(psi,theta, 'displayname', 'Silte Argiloso', 'linewidth', 2)
+% % hold on
+% % %--------------------------------------------------------------------------
+% % % Argila:
+% % %--------------------------------------------------------------------------
+% % [theta] = Van_Genuchten(0.550541,0, 0.006812, 1.08155 );
+% % plot(psi,theta, 'displayname', 'Argila', 'linewidth', 2)
+% % hold on
+% % %--------------------------------------------------------------------------
+% % % Tese:
+% % %--------------------------------------------------------------------------
+% % [theta] = Van_Genuchten(0.45,0.008, 0.003405, 1.34475 );
+% % plot(psi,theta, 'displayname', 'Tese', 'linewidth', 2)
+% % hold on
+% % %--------------------------------------------------------------------------
+title('Curva de Retenção solo-água')
+legend ('show')
+set(gca, 'XScale', 'log')
+ax1 = gca;
+xlabel(ax1, 'Sucção (kPa)', 'FontWeight', 'bold')
+ylabel('\Theta (Teor de Umidade)', 'FontWeight', 'bold')
+grid on
+axis([1e0 1e6 0 0.5])
+hold off
+
+figure
+[K] = Van_Genuchten_k(0.00059, 0.087424, 1.57535 );
+plot(psi,K, 'displayname', 'Areia', 'linewidth', 2)
+title('Curva de permeabilidade')
+legend ('show')
+set(gca, 'XScale', 'log')
+ax1 = gca;
+xlabel(ax1, '\Sucção (kPa)', 'FontWeight', 'bold')
+set(gca, 'YScale', 'log')
+ay1 = gca;
+ylabel('K (m/s)', 'FontWeight', 'bold')
+grid on
+axis([1e0 1e6 1e-10 1e-1])
+
